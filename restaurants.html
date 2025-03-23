@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous Restaurants in Chhatrapati Sambhajinagar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            background: linear-gradient(135deg, #FF512F, #DD2476);
+            transition: background 0.5s, color 0.5s;
+        }
+        .sidebar {
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(135deg, #FF512F, #DD2476);
+            color: white;
+            padding: 25px;
+            position: fixed;
+            left: -320px; /* Hide sidebar by default */
+            top: 0;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+            transition: left 0.3s ease-in-out;
+            z-index: 1000; /* Ensure sidebar is above other content */
+        }
+        .sidebar.active {
+            left: 0; /* Show sidebar */
+        }
+        .user-switch {
+            margin-bottom: 20px;
+        }
+        .user-switch select {
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid white;
+            display: block;
+            margin: 20px auto;
+            object-fit: cover;
+        }
+        .compartment {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
+        .content {
+            margin-left: 0; /* Adjusted for sidebar toggle */
+            padding: 90px 30px 30px; /* Adjusted padding-top to 90px */
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center horizontally */
+            text-align: center;
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .content.shifted {
+            margin-left: 320px; /* Shift content when sidebar is open */
+        }
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(135deg, #FF512F, #DD2476);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Align items on both ends */
+            padding: 0 30px;
+            color: white;
+            z-index: 1000; /* Ensure it stays on top */
+        }
+        .top-bar .profile-icon {
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+        .top-bar .profile-icon:hover {
+            transform: scale(1.1);
+        }
+        .top-bar .back-btn {
+            padding: 8px 20px;
+            border: none;
+            background: white;
+            color: #FF512F;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        .top-bar .back-btn:hover {
+            background: #DD2476;
+            color: white;
+        }
+        .restaurants-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 30px;
+        }
+        .restaurant-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .restaurant-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .restaurant-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .restaurant-card h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0 10px;
+            color: #333;
+        }
+        .restaurant-card p {
+            font-size: 16px;
+            color: #666;
+            padding: 0 20px 20px;
+        }
+        .restaurant-card .rating {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            color: #FFD700;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="user-switch">
+            <label for="userSelect">Switch User:</label>
+            <select id="userSelect" onchange="switchUser()">
+                <option value="user1">Govindpuri Goswami</option>
+                <option value="user2">Suhani Ajaysingh Thakur</option>
+                <option value="user3">Snehal Somwanshi</option>
+            </select>
+        </div>
+        <img src="profile1.jpg" alt="Profile Picture" class="profile-pic" id="profilePic">
+        <div class="compartment">
+            <h3>Name</h3>
+            <p id="userName">Govindpuri Goswami</p>
+        </div>
+        <div class="compartment">
+            <h3>Contact</h3>
+            <p id="userPhone">📞 7219398827</p>
+            <p id="userEmail">📧 govindgoswami750@gmail.com</p>
+        </div>
+        <div class="compartment">
+            <h3>Address</h3>
+            <p id="userAddress">📍 Bajajnagar, Chhatrapati Sambhajinagar-431136</p>
+        </div>
+        <div class="compartment">
+            <h3>Current City</h3>
+            <p id="userCity">📍 Chhatrapati Sambhajinagar</p>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="profile-icon" onclick="toggleSidebar()">👤</div>
+        <button class="back-btn" onclick="goBack()">Back</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content" id="content">
+        <h1>Famous Restaurants in Chhatrapati Sambhajinagar</h1>
+        <div class="restaurants-container">
+            <!-- Restaurant 1 -->
+            <div class="restaurant-card">
+                <img src="rama.png" alt="Hotel Rama International">
+                <h3>Hotel Rama International</h3>
+                <p>Known for its luxurious ambiance and delicious multi-cuisine dishes.</p>
+                <div class="rating">★★★★☆</div>
+            </div>
+            <!-- Restaurant 2 -->
+            <div class="restaurant-card">
+                <img src="bhoj.png" alt="Bhoj">
+                <h3>Bhoj</h3>
+                <p>Famous for its authentic Maharashtrian and North Indian cuisine.</p>
+                <div class="rating">★★★★★</div>
+            </div>
+            <!-- Restaurant 3 -->
+            <div class="restaurant-card">
+                <img src="green-leaf.png" alt="Green Leaf Restaurant">
+                <h3>Green Leaf Restaurant</h3>
+                <p>A vegetarian paradise with a wide range of Indian dishes.</p>
+                <div class="rating">★★★★☆</div>
+            </div>
+            <!-- Restaurant 4 -->
+            <div class="restaurant-card">
+                <img src="kinara.png" alt="Kinara Veg Restaurant">
+                <h3>Kinara Veg Restaurant</h3>
+                <p>Popular for its South Indian and Chinese delicacies.</p>
+                <div class="rating">★★★★☆</div>
+            </div>
+            <!-- Restaurant 5 -->
+            <div class="restaurant-card">
+                <img src="barbique.png" alt="Barbeque Nation">
+                <h3>Barbeque Nation</h3>
+                <p>Known for its live grills and buffet spread.</p>
+                <div class="rating">★★★★★</div>
+            </div>
+            <!-- Restaurant 6 -->
+            <div class="restaurant-card">
+                <img src="panchvati.png" alt="Hotel Panchavati">
+                <h3>Hotel Panchavati</h3>
+                <p>Offers a mix of Indian and Continental cuisine.</p>
+                <div class="rating">★★★★☆</div>
+            </div>
+            <!-- Restaurant 7 -->
+            <div class="restaurant-card">
+                <img src="yellow.png" alt="The Yellow Chilli">
+                <h3>The Yellow Chilli</h3>
+                <p>Known for its modern Indian cuisine by Chef Sanjeev Kapoor.</p>
+                <div class="rating">★★★★★</div>
+            </div>
+            <!-- Restaurant 8 -->
+            <div class="restaurant-card">
+                <img src="krishna.png" alt="Krishna Restaurant">
+                <h3>Krishna Restaurant</h3>
+                <p>Famous for its North Indian and Mughlai dishes.</p>
+                <div class="rating">★★★★☆</div>
+            </div>
+            <!-- Restaurant 9 -->
+            <div class="restaurant-card">
+                <img src="kabab.png" alt="The Great Kabab Factory">
+                <h3>The Great Kabab Factory</h3>
+                <p>Specializes in a variety of kebabs and Indian dishes.</p>
+                <div class="rating">★★★★★</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Sidebar Function
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('active');
+            content.classList.toggle('shifted');
+        }
+
+        // Hide Sidebar When Clicking Outside
+        document.addEventListener('click', (event) => {
+            const sidebar = document.getElementById('sidebar');
+            const profileIcon = document.querySelector('.profile-icon');
+            if (!sidebar.contains(event.target) && !profileIcon.contains(event.target)) {
+                sidebar.classList.remove('active');
+                document.getElementById('content').classList.remove('shifted');
+            }
+        });
+
+        // Switch User Function
+        const users = {
+            user1: {
+                name: "Govindpuri Goswami",
+                phone: "📞 7219398827",
+                email: "📧 govindgoswami750@gmail.com",
+                address: "📍 Bajajnagar, Chhatrapati Sambhajinagar-431136",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile1.jpg"
+            },
+            user2: {
+                name: "Suhani Ajaysingh Thakur",
+                phone: "📞 7385500439",
+                email: "📧 suhanithakur9096@gmail.com",
+                address: "📍 Near fire station, Railway station road, Chhatrapati Sambhajinagar, 431001",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile2.jpg"
+            },
+            user3: {
+                name: "Snehal Somwanshi",
+                phone: "📞 7875033445",
+                email: "📧 snehaldeshmukh611@gmail.com",
+                address: "📍 Tv center, Chhatrapati Sambhajinagar-431001",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile3.jpg"
+            }
+        };
+
+        function switchUser() {
+            const selectedUser = document.getElementById('userSelect').value;
+            document.getElementById('userName').textContent = users[selectedUser].name;
+            document.getElementById('userPhone').textContent = users[selectedUser].phone;
+            document.getElementById('userEmail').textContent = users[selectedUser].email;
+            document.getElementById('userAddress').textContent = users[selectedUser].address;
+            document.getElementById('userCity').textContent = users[selectedUser].city;
+            document.getElementById('profilePic').src = users[selectedUser].profilePic;
+            document.getElementById('dashboardUserName').textContent = users[selectedUser].name;
+        }
+
+        // Go Back Function
+        function goBack() {
+            window.location.href = "first.html"; // Redirect to first.html
+        }
+    </script>
+</body>
+</html>

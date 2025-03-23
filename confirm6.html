@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanks for your order</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #2b5876, #4e4376, #ff758c);
+            background-size: 300% 300%;
+            animation: gradientBG 8s ease infinite;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Animated Background Effect */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Bubbles */
+        .bubble {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: bubbleMove 10s infinite ease-in-out;
+        }
+
+        @keyframes bubbleMove {
+            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Glowing Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ffd700;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 3s infinite ease-in-out;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* Gradient Themed Content Box */
+        .confetti-container {
+            text-align: center;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(15px);
+            width: 90%;
+            max-width: 500px;
+            animation: fadeIn 1s ease-in-out;
+            position: relative;
+            z-index: 2;
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .confirmation-header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .confirmation-header p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .order-details {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .order-details h2 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .order-details p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .confirmation-footer {
+            margin-top: 20px;
+        }
+
+        .confirmation-footer a {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .confirmation-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .continue-shopping-btn {
+            background: linear-gradient(135deg, #ff512f, #dd2476);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.5);
+        }
+
+        .continue-shopping-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .continue-shopping-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Bubbles -->
+    <div class="bubble" style="width: 80px; height: 80px; left: 10%; animation-delay: 0s;"></div>
+    <div class="bubble" style="width: 50px; height: 50px; left: 30%; animation-delay: 2s;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; left: 50%; animation-delay: 4s;"></div>
+    <div class="bubble" style="width: 90px; height: 90px; left: 70%; animation-delay: 1s;"></div>
+    <div class="bubble" style="width: 70px; height: 70px; left: 90%; animation-delay: 3s;"></div>
+
+    <!-- Glowing Sparkles -->
+    <div class="sparkle" style="top: 10%; left: 20%;"></div>
+    <div class="sparkle" style="top: 20%; left: 50%;"></div>
+    <div class="sparkle" style="top: 30%; left: 80%;"></div>
+    <div class="sparkle" style="top: 40%; left: 10%;"></div>
+    <div class="sparkle" style="top: 50%; left: 70%;"></div>
+
+    <!-- Confirmation Card -->
+    <div class="confetti-container">
+        <div class="confirmation-header">
+            <h1>Thanks for your order!</h1>
+            <p>Your order has been successfully placed.</p>
+        </div>
+        <div class="confirmation-body">
+            <div class="order-details">
+                <h2>Order Details</h2>
+                <p><strong>Order ID:</strong> #123456</p>
+                <div class="Date">
+                    <p><strong>Date:</strong> 2023-10-25</p>
+                    <p><strong>Time:</strong> 14:30 PM</p>
+                </div>
+                <p><strong>Total:</strong> ₹0.00</p>
+            </div>
+        </div>
+        <div class="confirmation-footer">
+            <p>We appreciate your business! If you have any questions, feel free to <a href="mailto:govindgoswami750@gmail.com">contact us</a>.</p>
+            <button onclick="window.location.href='home3.html';" class="continue-shopping-btn">Continue Shopping</button>
+        </div>
+    </div>
+</body>
+</html>

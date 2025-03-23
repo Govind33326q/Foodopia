@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foodopia - Online Food Ordering</title>
+    <link rel="stylesheet" href="index1.css">
+    <!-- Correct Font Awesome Link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Background Image */
+        body {
+            background: url('images/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+
+        /* Navbar Styling */
+        .navbar h1 {
+            animation: fadeInDown 1s ease-in-out;
+            font-size: 36px;
+        }
+
+        /* Enhanced Login Button */
+        .nav ul li a {
+            background: linear-gradient(45deg, #ff4d4d, #ff944d);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: 0.4s ease-in-out;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.5);
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .nav ul li a:hover {
+            background: linear-gradient(45deg, #ff944d, #ff4d4d);
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(255, 77, 77, 0.8);
+        }
+
+        /* Header Animations */
+        .header h3 {
+            animation: slideInLeft 1.5s ease-in-out;
+            font-size: 48px;
+        }
+        .header p {
+            animation: fadeIn 2s ease-in-out;
+            font-size: 22px;
+            line-height: 1.6;
+        }
+
+        /* Social Media Section */
+        .social-media h4 {
+            animation: fadeInUp 2s ease-in-out;
+            font-size: 36px;
+        }
+        .social-media p {
+            font-size: 20px;
+        }
+
+        /* Footer Styling */
+        .footer {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px 20px;
+            text-align: center;
+            color: #fff;
+            position: relative; /* Make footer a positioning context */
+        }
+        .footer h4 {
+            font-size: 26px;
+            margin-bottom: 15px;
+        }
+        .footer p {
+            font-size: 18px;
+            margin: 5px 0;
+        }
+
+        /* Dynamic Social Media Icons */
+        .social-icons {
+            position: absolute; /* Position icons absolutely within the footer */
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+            display: flex;
+            gap: 10px; /* Space between icons */
+        }
+        .social-icons a {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff4d4d, #ff944d);
+            color: white;
+            font-size: 24px;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .social-icons a i {
+            transition: 0.3s ease-in-out;
+        }
+
+        .social-icons a:hover i {
+            transform: rotate(360deg);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="nav-container container">
+            <a href="#"><h1>Foodopia</h1></a>
+            <ul class="nav">
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Header -->
+    <div class="header">
+        <div class="container">
+            <div>
+                <h3>The Taste Is Here!</h3>
+                <p>
+                    Welcome to <strong>Foodopia</strong>, where every bite tells a story! Indulge in a culinary journey like no other, 
+                    featuring mouth-watering dishes crafted by world-class chefs. From sizzling starters to decadent desserts, 
+                    we bring the finest flavors straight to your table. Whether you're craving comfort food or gourmet delights, 
+                    Foodopia is your gateway to a world of taste. Order now and let your taste buds celebrate!
+                </p>
+                <h4>Why Login?</h4>
+                <p>
+                    Please Login !...
+                </p>
+            </div>
+            <img src="front-page-dish.jpg" alt="Delicious Dish">
+        </div>
+    </div>
+    
+    <!-- Social Media Section -->
+    <div class="social-media">
+        <h4>Follow Us</h4>
+        <p>
+            Stay connected with Foodopia for the latest updates, exclusive offers, and behind-the-scenes 
+            glimpses of our culinary magic. Join our community and be the first to know about new dishes, 
+            special events, and more!
+        </p>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="main-container">
+            <div>
+                <h4>Contact Us</h4>
+                <p>Have questions or feedback? We'd love to hear from you!</p>
+                <p>📧 Email: support@foodopia.com</p>
+                <p>📞 Phone: +91 7219398827</p>
+                <p>📍 Address: Chhatrapati Sambhajinagar</p>
+            </div>
+
+            <!-- Dynamic Social Media Handles in Footer -->
+            <div class="social-icons">
+                <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

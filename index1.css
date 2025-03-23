@@ -1,0 +1,102 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+body{
+    font-family: "Nunito", sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+.navbar{
+    width: 90%;
+    margin: auto;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+}
+
+.nav-container{
+    padding: 20px 0;
+}
+
+.nav-container h2{
+    color: rgb(29, 29, 29);
+}
+
+.nav-container .nav{
+    justify-self: flex-end;
+    display: flex;
+}
+
+.nav-container .nav a{
+    margin: 0 20px;
+    color: black;
+}
+
+.nav-container .nav a .active{
+    background: black;
+    color: white;
+    padding: 10 30px;
+border-radius: 30px;
+}
+
+.header{
+    width: 80%;
+    margin: 70px auto;
+}
+
+.container img{
+    width: 80%;
+    left: 500px ;
+}
+
+.container div h3{
+    font-size: 70px;
+}
+
+}
+
+.container div p{
+    margin: 50px 0px;
+    background-color:white;
+    font-family:math;
+    font-size: large;
+    align-self: flex-start;
+  margin: 20px 0;
+  display: inline-block;
+  color:black;
+  border-radius: 10px;
+}
+
+.footer{
+    margin: 10px 0 0 0;
+    background: #333;
+    padding: 100px 100px;
+}
+
+.footer .main-container{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-gap: 2rem;
+}
+
+.main-container div h4{
+    color: rgb(41, 100, 177);
+    font-size: 25px;
+    margin: 10px 0;
+}
+ .main-container div li{
+    cursor: pointer;
+    color: white;
+    margin: 3px 0;
+ }

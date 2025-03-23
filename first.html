@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-User Profile Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            display: flex;
+            background: #f8f1f1;
+            transition: background 0.5s, color 0.5s;
+            background: url('images/firstbg.jpg') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .sidebar {
+            width: 320px;
+            height: 100vh;
+            background: linear-gradient(135deg, #FF512F, #DD2476);
+            color: white;
+            padding: 25px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .user-switch {
+            margin-bottom: 20px;
+        }
+        .user-switch select {
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid white;
+            display: block;
+            margin: 20px auto;
+            object-fit: cover;
+        }
+        .compartment {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
+        .content {
+            margin-left: 350px;
+            padding: 90px 30px 30px;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .welcome-section {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .welcome-section h1 {
+            color: white; /* White color applied */
+        }
+        .cards-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .card {
+            width: 280px;
+            padding: 30px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #FF512F, #FF7B00);
+            box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            cursor: pointer;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 320px;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(135deg, #FF512F, #DD2476);
+            box-shadow: 0 4px 10px rgb(255, 255, 255);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 30px;
+            color: white;
+            z-index: 1000;
+        }
+        .top-bar .logout-btn {
+            padding: 8px 20px;
+            border: none;
+            background: white;
+            color: #FF512F;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+        .top-bar .logout-btn:hover {
+            background: #DD2476;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="user-switch">
+            <label for="userSelect">Switch User:</label>
+            <select id="userSelect" onchange="switchUser()">
+                <option value="user1">Govindpuri Goswami</option>
+                <option value="user2">Suhani Ajaysingh Thakur</option>
+                <option value="user3">Snehal Somwanshi</option>
+            </select>
+        </div>
+        <img src="profile1.jpg" alt="Profile Picture" class="profile-pic" id="profilePic">
+        <div class="compartment">
+            <h3>Name</h3>
+            <p id="userName">Govindpuri Goswami</p>
+        </div>
+        <div class="compartment">
+            <h3>Contact</h3>
+            <p id="userPhone">📞 7219398827</p>
+            <p id="userEmail">📧 govindgoswami750@gmail.com</p>
+        </div>
+        <div class="compartment">
+            <h3>Address</h3>
+            <p id="userAddress">📍 Bajajnagar, Chhatrapati Sambhajinagar-431136</p>
+        </div>
+        <div class="compartment">
+            <h3>Current City</h3>
+            <p id="userCity">📍 Chhatrapati Sambhajinagar</p>
+        </div>
+    </div>
+    <div class="top-bar">
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+    <div class="content">
+        <div class="welcome-section">
+            <h1>Welcome, <span id="dashboardUserName">Govindpuri Goswami</span>!</h1>
+        </div>
+        <div class="cards-section">
+            <div class="cards-container">
+                <div class="card" onclick="window.location.href='home3.html'">
+                    <h3>Order Now</h3>
+                    <p>Place your order quickly!</p>
+                </div>
+                <div class="card" onclick="window.location.href='restaurants.html'">
+                    <h3>Restaurants</h3>
+                    <p>Explore the best places to eat!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const users = {
+            user1: {
+                name: "Govindpuri Goswami",
+                phone: "📞 7219398827",
+                email: "📧 govindgoswami750@gmail.com",
+                address: "📍 Bajajnagar, Chhatrapati Sambhajinagar-431136",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile1.jpg"
+            },
+            user2: {
+                name: "Suhani Ajaysingh Thakur",
+                phone: "📞 7385500439",
+                email: "📧 suhanithakur9096@gmail.com",
+                address: "📍 Near fire station, Railway station road, Chhatrapati Sambhajinagar, 431001",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile2.jpg"
+            },
+            user3: {
+                name: "Snehal Somwanshi",
+                phone: "📞 7875033445",
+                email: "📧 snehaldeshmukh611@gmail.com",
+                address: "📍 Tv center, Chhatrapati Sambhajinagar-431001",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile3.jpg"
+            }
+        };
+
+        function switchUser() {
+            const selectedUser = document.getElementById('userSelect').value;
+            document.getElementById('userName').textContent = users[selectedUser].name;
+            document.getElementById('dashboardUserName').textContent = users[selectedUser].name;
+        }
+
+        function logout() {
+            alert("Logging out...");
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

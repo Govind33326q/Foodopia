@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        /* Basic Styles */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff6a65, #ff5f3e);
+            animation: gradientShift 6s infinite alternate ease-in-out;
+            position: relative;
+        }
+
+        /* Gradient Animation */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Back Button */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: orange;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background-color: darkorange;
+            transform: scale(1.1);
+        }
+
+        /* Container */
+        .container {
+            max-width: 400px;
+            margin: 12px auto;
+            padding: 20px;
+            border: 2px solid #fff;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Buttons */
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .upi-btn {
+            background: #007bff;
+            color: white;
+        }
+
+        .upi-btn:hover {
+            background: #0056b3;
+        }
+
+        .cod-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .cod-btn:hover {
+            background: #1e7d32;
+        }
+
+        /* Flip Card */
+        .flip-card {
+            width: 200px;
+            height: 200px;
+            perspective: 1000px;
+            margin: auto;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        /* This class will be added via JavaScript */
+        .flipped {
+            transform: rotateY(180deg) !important;
+        }
+
+        .flip-card-front, .flip-card-back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .flip-card-front {
+            background: #ddd;
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .flip-card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-back img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /* Hidden Sections */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <a href="home3.html" class="back-btn">← Back</a>
+
+    <h2>Select Payment Method</h2> 
+
+    <div class="container">
+        <button class="upi-btn" onclick="showPayment('upi')">Pay via UPI</button>
+        <button class="cod-btn" onclick="showPayment('cod')">Cash on Delivery</button>
+    </div>
+
+    <!-- UPI Payment Section -->
+    <div id="upi" class="container hidden">
+        <h3>UPI Payment</h3>
+        <input type="text" id="upi-id" placeholder="Enter UPI ID">
+        <button class="upi-btn" onclick="processPayment('UPI')">Proceed to Pay</button>
+        <div class="qr-container">
+            <h4>Click to Reveal QR Code</h4>
+            <div class="flip-card" onclick="flipQR()">
+                <div class="flip-card-inner" id="qrFlip">
+                    <!-- Front: Hidden Text -->
+                    <div class="flip-card-front">
+                        Click Here to See QR Code
+                    </div>
+                    <!-- Back: QR Code -->
+                    <div class="flip-card-back">
+                        <img src="qr.png" alt="QR Code">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cash on Delivery Section -->
+    <div id="cod" class="container hidden">
+        <h3>Cash on Delivery</h3>
+        <p>Order will be placed with COD option.</p>
+        <button class="cod-btn" onclick="processPayment('COD')">Confirm Order</button> 
+    </div>
+
+    <script>
+        // Show the selected payment method
+        function showPayment(method) {
+            document.getElementById('upi').classList.add('hidden');
+            document.getElementById('cod').classList.add('hidden');
+            document.getElementById(method).classList.remove('hidden');
+        }
+
+        // Process the payment
+        function processPayment(method) {
+            if (method === 'UPI') {
+                const upiId = document.getElementById('upi-id').value;
+                if (upiId.trim() !== "") {
+                    alert("Payment Successful via UPI!");
+                    window.location.href = "success5.html";
+                } else {
+                    alert('Please enter a valid UPI ID.');
+                }
+            } else if (method === 'COD') {
+                alert("Order Confirmed with Cash on Delivery!");
+                window.location.href = "confirm6.html";
+            }
+        }
+
+        // Function to Flip QR Code Only Once
+        function flipQR() {
+            document.getElementById('qrFlip').classList.add('flipped');
+        }
+    </script>
+</body>
+</html>
