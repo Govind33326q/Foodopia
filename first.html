@@ -3,25 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-User Profile Dashboard</title>
+    <title>Foodopia Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Import the same font as the main website */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap');
+        
+        /* CSS Variables for Consistent Theming */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff4d4d, #ff944d);
+            --secondary-gradient: linear-gradient(45deg, #ff944d, #ff4d4d);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #f0f0f0;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --transition-speed: 0.4s;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
+        
         body {
             display: flex;
-            background: #f8f1f1;
-            transition: background 0.5s, color 0.5s;
-            background: url('images/firstbg.jpg') no-repeat center center fixed;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center fixed;
             background-size: cover;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
+        
+        /* Add overlay for better readability */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: -1;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-gradient);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-gradient);
+        }
+        
         .sidebar {
-            width: 320px;
+            width: 300px;
             height: 100vh;
-            background: linear-gradient(135deg, #FF512F, #DD2476);
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-right: 1px solid var(--glass-border);
             color: white;
             padding: 25px;
             position: fixed;
@@ -29,167 +82,1077 @@
             top: 0;
             overflow-y: auto;
             text-align: center;
-            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 4px 0 15px var(--shadow-color);
+            transition: transform var(--transition-speed) ease;
+            z-index: 100;
+            border-right: 2px solid #ff944d;
         }
+        
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+        }
+        
         .user-switch {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            text-align: left;
         }
+        
+        .user-switch label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
         .user-switch select {
-            padding: 10px;
+            padding: 12px;
             width: 100%;
-            border-radius: 8px;
-            border: none;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
             font-size: 16px;
             cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            outline: none;
         }
+        
+        .user-switch select:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ff944d;
+            box-shadow: 0 0 10px rgba(255, 148, 77, 0.3);
+        }
+        
+        .user-switch select option {
+            background: #333;
+            color: white;
+        }
+        
         .profile-pic {
             width: 130px;
             height: 130px;
             border-radius: 50%;
-            border: 5px solid white;
+            border: 5px solid var(--glass-border);
             display: block;
             margin: 20px auto;
             object-fit: cover;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
         }
+        
+        .profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 148, 77, 0.4);
+        }
+        
+        .edit-profile-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .edit-profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
+        }
+        
         .compartment {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
             padding: 15px;
             margin: 15px 0;
-            border-radius: 12px;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-speed) ease;
         }
-        .content {
-            margin-left: 350px;
-            padding: 90px 30px 30px;
+        
+        .compartment:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .compartment h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ff944d;
+            display: flex;
+            align-items: center;
+        }
+        
+        .compartment h3 i {
+            margin-right: 10px;
+        }
+        
+        .compartment p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 100%;
+        }
+        
+        .compartment p:hover {
+            white-space: normal;
+            overflow: visible;
+        }
+        
+        .main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-left: 0;
+            min-height: 100vh;
             width: 100%;
-            height: 100vh;
+            transition: all var(--transition-speed) ease;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .main-container.full-width {
+            margin-left: 0;
+            width: 100%;
+        }
+        
+        .top-bar {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            color: white;
+            z-index: 99;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 8px 15px;
+            width: 300px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .search-container:focus-within {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 148, 77, 0.3);
+        }
+        
+        .search-container input {
+            background: none;
+            border: none;
+            color: white;
+            outline: none;
+            width: 100%;
+            padding: 5px 10px;
+            font-size: 1rem;
+        }
+        
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-container i {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .notification-btn:hover {
+            color: #ff944d;
+            transform: scale(1.1);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4d4d;
+            color: white;
+            font-size: 0.7rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .top-bar .logout-btn {
+            padding: 12px 25px;
+            border: none;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .top-bar .logout-btn i {
+            margin-right: 8px;
+        }
+        
+        .top-bar .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            z-index: -1;
+            transition: transform 0.5s ease;
+            transform: translateX(-100%);
+        }
+        
+        .top-bar .logout-btn:hover::before {
+            transform: translateX(0);
+        }
+        
+        .top-bar .logout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.6);
+        }
+        
+        .menu-toggle {
+            display: block;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 90px 30px 30px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            overflow-y: auto;
+            width: 100%;
         }
+        
         .welcome-section {
             width: 100%;
+            max-width: 1400px;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
+        
         .welcome-section h1 {
-            color: white; /* White color applied */
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 77, 77, 0.3);
+            animation: fadeIn 1s ease-in-out;
         }
+        
+        #dashboardUserName {
+            font-weight: 900;
+        }
+        
         .cards-section {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 100%;
+            max-width: 1400px;
+            margin-bottom: 40px;
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
             width: 100%;
         }
-        .cards-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
+        
         .card {
-            width: 280px;
-            padding: 30px;
+            padding: 40px 30px;
             border-radius: 20px;
-            background: linear-gradient(135deg, #FF512F, #FF7B00);
-            box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            transition: all var(--transition-speed) ease;
             cursor: pointer;
             text-align: center;
             color: white;
             position: relative;
             overflow: hidden;
+            z-index: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-gradient);
+            z-index: -1;
+            transition: transform 0.5s ease;
+            transform: scale(0);
+            border-radius: 20px;
+        }
+        
+        .card:hover::before {
+            transform: scale(1);
+        }
+        
         .card:hover {
-            transform: scale(1.05);
-            box-shadow: 8px 8px 25px rgba(0, 0, 0, 0.4);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 77, 77, 0.4);
         }
+        
+        .card i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff944d;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .card:hover i {
+            color: white;
+            transform: scale(1.2);
+        }
+        
         .card h3 {
             margin-bottom: 15px;
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
         }
-        .top-bar {
+        
+        .card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+        }
+        
+        .card p {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        /* Recent Orders Section */
+        .recent-orders {
+            width: 100%;
+            max-width: 1400px;
+            margin-top: 20px;
+        }
+        
+        .recent-orders h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #ff944d;
+            text-align: left;
+        }
+        
+        .orders-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .order-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-color);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .order-id {
+            font-weight: 600;
+            color: #ff944d;
+        }
+        
+        .order-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-delivered {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .status-preparing {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+        
+        .status-cancelled {
+            background: rgba(244, 67, 54, 0.2);
+            color: #F44336;
+        }
+        
+        .order-details {
+            margin-bottom: 15px;
+        }
+        
+        .order-restaurant {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .order-items {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .order-date {
+            opacity: 0.7;
+        }
+        
+        .order-total {
+            font-weight: 600;
+        }
+        
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            width: 350px;
+            max-height: 400px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            z-index: 1000;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .notification-panel.active {
+            display: flex;
+        }
+        
+        .notification-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notification-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .notification-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .notification-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        .close-notifications {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .close-notifications:hover {
+            color: #ff944d;
+        }
+        
+        /* Modal for Profile Edit */
+        .modal {
             position: fixed;
             top: 0;
-            left: 320px;
-            right: 0;
-            height: 60px;
-            background: linear-gradient(135deg, #FF512F, #DD2476);
-            box-shadow: 0 4px 10px rgb(255, 255, 255);
-            display: flex;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
             align-items: center;
-            justify-content: flex-end;
-            padding: 0 30px;
-            color: white;
-            z-index: 1000;
+            z-index: 2000;
+            overflow: auto; /* Fix: Ensure modal container allows scrolling if needed */
         }
-        .top-bar .logout-btn {
-            padding: 8px 20px;
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh; /* Fix: Limit height to viewport */
+            overflow-y: auto; /* Fix: Enable vertical scrolling */
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff944d;
+        }
+        
+        .close-modal {
+            background: none;
             border: none;
-            background: white;
-            color: #FF512F;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
-        .top-bar .logout-btn:hover {
-            background: #DD2476;
             color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .close-modal:hover {
+            color: #ff944d;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .form-group input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ff944d;
+            box-shadow: 0 0 10px rgba(255, 148, 77, 0.3);
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-group input[type="file"] {
+            padding: 0;
+        }
+        
+        .profile-pic-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-top: 10px;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        .btn-cancel, .btn-save {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-save {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.6);
+        }
+        
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            display: none;
+            transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
+            visibility: hidden;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1600px) {
+            .welcome-section,
+            .cards-section,
+            .recent-orders {
+                max-width: 1200px;
+            }
+        }
+        
+        @media (max-width: 1400px) {
+            .sidebar {
+                width: 260px;
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .welcome-section,
+            .cards-section,
+            .recent-orders {
+                max-width: 1000px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .search-container {
+                width: 250px;
+            }
+            
+            .welcome-section,
+            .cards-section,
+            .recent-orders {
+                max-width: 900px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .welcome-section,
+            .cards-section,
+            .recent-orders {
+                max-width: 800px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+                transform: translateX(-100%);
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .main-container.full-width {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .welcome-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .cards-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .card {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+            
+            .notification-panel {
+                width: 90%;
+                right: 5%;
+            }
+            
+            .welcome-section,
+            .cards-section,
+            .recent-orders {
+                max-width: 100%;
+            }
+            
+            .compartment p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .welcome-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .card {
+                padding: 25px 15px;
+            }
+            
+            .card h3 {
+                font-size: 1.5rem;
+            }
+            
+            .card i {
+                font-size: 2.5rem;
+            }
+            
+            .orders-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                padding: 20px; /* Fix: Reduce padding on smaller screens */
+            }
         }
     </style>
 </head>
 <body>
-    <div class="sidebar">
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="logo">
+            <h1>Foodopia</h1>
+        </div>
         <div class="user-switch">
-            <label for="userSelect">Switch User:</label>
+            <label for="userSelect"><i class="fas fa-user-circle"></i> Switch User:</label>
             <select id="userSelect" onchange="switchUser()">
                 <option value="user1">Govindpuri Goswami</option>
-                <option value="user2">Suhani Ajaysingh Thakur</option>
-                <option value="user3">Snehal Somwanshi</option>
             </select>
         </div>
-        <img src="profile1.jpg" alt="Profile Picture" class="profile-pic" id="profilePic">
+        <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Profile Picture" class="profile-pic" id="profilePic" onclick="openProfileEdit()">
+        <button class="edit-profile-btn" onclick="openProfileEdit()"><i class="fas fa-edit"></i> Edit Profile</button>
         <div class="compartment">
-            <h3>Name</h3>
+            <h3><i class="fas fa-user"></i> Name</h3>
             <p id="userName">Govindpuri Goswami</p>
         </div>
         <div class="compartment">
-            <h3>Contact</h3>
+            <h3><i class="fas fa-address-book"></i> Contact</h3>
             <p id="userPhone">📞 7219398827</p>
-            <p id="userEmail">📧 govindgoswami750@gmail.com</p>
+            <p id="userEmail" title="govindgoswami750@gmail.com">📧 govindgoswami750@gmail.com</p>
         </div>
         <div class="compartment">
-            <h3>Address</h3>
+            <h3><i class="fas fa-map-marker-alt"></i> Address</h3>
             <p id="userAddress">📍 Bajajnagar, Chhatrapati Sambhajinagar-431136</p>
         </div>
         <div class="compartment">
-            <h3>Current City</h3>
+            <h3><i class="fas fa-city"></i> Current City</h3>
             <p id="userCity">📍 Chhatrapati Sambhajinagar</p>
         </div>
     </div>
-    <div class="top-bar">
-        <button class="logout-btn" onclick="logout()">Logout</button>
-    </div>
-    <div class="content">
-        <div class="welcome-section">
-            <h1>Welcome, <span id="dashboardUserName">Govindpuri Goswami</span>!</h1>
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="main-container full-width" id="mainContainer">
+        <div class="top-bar">
+            <div class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search restaurants, dishes..." id="searchInput">
+            </div>
+            <div class="top-bar-actions">
+                <button class="notification-btn" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
         </div>
-        <div class="cards-section">
-            <div class="cards-container">
-                <div class="card" onclick="window.location.href='home3.html'">
-                    <h3>Order Now</h3>
-                    <p>Place your order quickly!</p>
+         
+        <div class="notification-panel" id="notificationPanel">
+            <div class="notification-header">
+                <span>Notifications</span>
+                <button class="close-notifications" onclick="toggleNotifications()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="notification-list">
+                <div class="notification-item">
+                    <div class="notification-title">Order Delivered</div>
+                    <div class="notification-message">Your order from Spice Garden has been delivered</div>
+                    <div class="notification-time">10 minutes ago</div>
                 </div>
-                <div class="card" onclick="window.location.href='restaurants.html'">
-                    <h3>Restaurants</h3>
-                    <p>Explore the best places to eat!</p>
+                <div class="notification-item">
+                    <div class="notification-title">New Restaurant</div>
+                    <div class="notification-message">Burger Palace is now available in your area</div>
+                    <div class="notification-time">2 hours ago</div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-title">Special Offer</div>
+                    <div class="notification-message">Get 20% off on your next order with code FOOD20</div>
+                    <div class="notification-time">1 day ago</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="welcome-section">
+                <h1>Welcome, <span id="dashboardUserName">Govindpuri Goswami</span>!</h1>
+            </div>
+            <div class="cards-section">
+                <div class="cards-container">
+                    <div class="card" onclick="window.location.href='home.html'">
+                        <i class="fas fa-utensils"></i>
+                        <h3>Order Now</h3>
+                        <p>Place your order quickly and enjoy delicious food from your favorite restaurants!</p>
+                    </div>
+                    <div class="card" onclick="window.location.href='restaurants.html'">
+                        <i class="fas fa-store"></i>
+                        <h3>Restaurants</h3>
+                        <p>Explore the best places to eat in your area and discover new cuisines!</p>
+                    </div>
+                    <div class="card" onclick="window.location.href='orders.html'">
+                        <i class="fas fa-receipt"></i>
+                        <h3>My Orders</h3>
+                        <p>Track your current orders and view your order history!</p>
+                    </div>
+                    <div class="card" onclick="window.location.href='favorites.html'">
+                        <i class="fas fa-heart"></i>
+                        <h3>Favorites</h3>
+                        <p>View your favorite dishes and restaurants for quick ordering!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recent-orders">
+                <h2>Recent Orders</h2>
+                <div class="orders-container" id="ordersContainer">
+                    <!-- Orders will be dynamically added here -->
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Profile Edit Modal -->
+    <div class="modal" id="profileEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Profile</h3>
+                <button class="close-modal" onclick="closeProfileEdit()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="profileEditForm">
+                <div class="form-group">
+                    <label for="editProfilePic">Profile Picture</label>
+                    <input type="file" id="editProfilePic" accept="image/*">
+                    <img id="profilePicPreview" class="profile-pic-preview" alt="Profile Picture Preview">
+                </div>
+                <div class="form-group">
+                    <label for="editName">Name</label>
+                    <input type="text" id="editName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone</label>
+                    <input type="text" id="editPhone" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="editAddress">Address</label>
+                    <input type="text" id="editAddress" placeholder="Enter your address">
+                </div>
+                <div class="form-group">
+                    <label for="editCity">City</label>
+                    <input type="text" id="editCity" placeholder="Enter your city">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeProfileEdit()">Cancel</button>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
         const users = {
             user1: {
@@ -198,7 +1161,7 @@
                 email: "📧 govindgoswami750@gmail.com",
                 address: "📍 Bajajnagar, Chhatrapati Sambhajinagar-431136",
                 city: "📍 Chhatrapati Sambhajinagar",
-                profilePic: "images/profile1.jpg"
+                profilePic: "https://randomuser.me/api/portraits/men/1.jpg"
             },
             user2: {
                 name: "Suhani Ajaysingh Thakur",
@@ -206,7 +1169,7 @@
                 email: "📧 suhanithakur9096@gmail.com",
                 address: "📍 Near fire station, Railway station road, Chhatrapati Sambhajinagar, 431001",
                 city: "📍 Chhatrapati Sambhajinagar",
-                profilePic: "images/profile2.jpg"
+                profilePic: "https://randomuser.me/api/portraits/women/2.jpg"
             },
             user3: {
                 name: "Snehal Somwanshi",
@@ -214,20 +1177,333 @@
                 email: "📧 snehaldeshmukh611@gmail.com",
                 address: "📍 Tv center, Chhatrapati Sambhajinagar-431001",
                 city: "📍 Chhatrapati Sambhajinagar",
-                profilePic: "images/profile3.jpg"
+                profilePic: "https://randomuser.me/api/portraits/women/3.jpg"
             }
         };
-
+        
+        // Sample orders data
+        const orders = [
+            {
+                id: "ORD-001",
+                restaurant: "Spice Garden",
+                items: "2x Butter Chicken, 1x Naan",
+                status: "delivered",
+                date: "2023-10-15",
+                total: "₹450"
+            },
+            {
+                id: "ORD-002",
+                restaurant: "Pizza Palace",
+                items: "1x Margherita Pizza, 1x Garlic Bread",
+                status: "delivered",
+                date: "2023-10-10",
+                total: "₹350"
+            },
+            {
+                id: "ORD-003",
+                restaurant: "Burger Barn",
+                items: "1x Classic Burger, 1x Fries",
+                status: "preparing",
+                date: "2023-10-18",
+                total: "₹280"
+            }
+        ];
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRecentOrders();
+            setupSearchFunctionality();
+            setupProfileEditForm();
+            // Ensure sidebar starts collapsed on all devices
+            const sidebar = document.getElementById('sidebar');
+            const mainContainer = document.getElementById('mainContainer');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.add('collapsed');
+            mainContainer.classList.add('full-width');
+            overlay.classList.remove('active');
+            console.log("Initialized: Sidebar collapsed on all devices, Overlay hidden");
+        });
+        
         function switchUser() {
             const selectedUser = document.getElementById('userSelect').value;
             document.getElementById('userName').textContent = users[selectedUser].name;
+            document.getElementById('userPhone').textContent = users[selectedUser].phone;
+            document.getElementById('userEmail').textContent = users[selectedUser].email;
+            document.getElementById('userEmail').title = users[selectedUser].email.replace('📧 ', '');
+            document.getElementById('userAddress').textContent = users[selectedUser].address;
+            document.getElementById('userCity').textContent = users[selectedUser].city;
+            document.getElementById('profilePic').src = users[selectedUser].profilePic;
             document.getElementById('dashboardUserName').textContent = users[selectedUser].name;
+            
+            showNotification("User switched to " + users[selectedUser].name, "success");
         }
-
+        
         function logout() {
-            alert("Logging out...");
-            window.location.href = "index.html";
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.background = 'var(--primary-gradient)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '10px';
+            notification.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            notification.style.zIndex = '10000';
+            notification.style.fontWeight = '600';
+            notification.innerHTML = '<i class="fas fa-info-circle"></i> Logging out...';
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 1500);
         }
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const mainContainer = document.getElementById('mainContainer');
+            
+            sidebar.classList.toggle('collapsed');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            overlay.classList.toggle('active', !isCollapsed);
+            mainContainer.classList.toggle('full-width', isCollapsed);
+            
+            console.log(`Sidebar toggled: ${isCollapsed ? 'Collapsed' : 'Open'}, Overlay active: ${overlay.classList.contains('active')}`);
+        }
+        
+        function toggleNotifications() {
+            const notificationPanel = document.getElementById('notificationPanel');
+            notificationPanel.classList.toggle('active');
+            
+            if (notificationPanel.classList.contains('active')) {
+                document.querySelector('.notification-badge').style.display = 'none';
+            }
+        }
+        
+        function loadRecentOrders() {
+            const ordersContainer = document.getElementById('ordersContainer');
+            ordersContainer.innerHTML = '';
+            
+            orders.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.className = 'order-card';
+                
+                let statusClass = '';
+                if (order.status === 'delivered') {
+                    statusClass = 'status-delivered';
+                } else if (order.status === 'preparing') {
+                    statusClass = 'status-preparing';
+                } else if (order.status === 'cancelled') {
+                    statusClass = 'status-cancelled';
+                }
+                
+                orderCard.innerHTML = `
+                    <div class="order-header">
+                        <div class="order-id">${order.id}</div>
+                        <div class="order-status ${statusClass}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</div>
+                    </div>
+                    <div class="order-details">
+                        <div class="order-restaurant">${order.restaurant}</div>
+                        <div class="order-items">${order.items}</div>
+                    </div>
+                    <div class="order-footer">
+                        <div class="order-date">${formatDate(order.date)}</div>
+                        <div class="order-total">${order.total}</div>
+                    </div>
+                `;
+                
+                ordersContainer.appendChild(orderCard);
+            });
+        }
+        
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+        
+        function setupSearchFunctionality() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm) {
+                        showNotification(`Searching for "${searchTerm}"...`, "info");
+                        setTimeout(() => {
+                            window.location.href = `restaurants.html?search=${encodeURIComponent(searchTerm)}`;
+                        }, 1000);
+                    }
+                }
+            });
+        }
+        
+        function openProfileEdit() {
+            const modal = document.getElementById('profileEditModal');
+            const selectedUser = document.getElementById('userSelect').value;
+            
+            document.getElementById('editName').value = users[selectedUser].name;
+            document.getElementById('editPhone').value = users[selectedUser].phone.replace('📞 ', '');
+            document.getElementById('editEmail').value = users[selectedUser].email.replace('📧 ', '');
+            document.getElementById('editAddress').value = users[selectedUser].address.replace('📍 ', '');
+            document.getElementById('editCity').value = users[selectedUser].city.replace('📍 ', '');
+            
+            const preview = document.getElementById('profilePicPreview');
+            preview.src = users[selectedUser].profilePic;
+            preview.style.display = 'block';
+            
+            modal.classList.add('active');
+            console.log("Profile edit modal opened"); // Fix: Debug log
+        }
+        
+        function closeProfileEdit() {
+            const modal = document.getElementById('profileEditModal');
+            modal.classList.remove('active');
+            document.getElementById('profilePicPreview').style.display = 'none';
+            document.getElementById('editProfilePic').value = '';
+        }
+        
+        function setupProfileEditForm() {
+            const form = document.getElementById('profileEditForm');
+            const profilePicInput = document.getElementById('editProfilePic');
+            const preview = document.getElementById('profilePicPreview');
+            
+            profilePicInput.addEventListener('change', function() {
+                if (profilePicInput.files && profilePicInput.files[0]) {
+                    const file = profilePicInput.files[0];
+                    if (!file.type.startsWith('image/')) {
+                        showNotification("Please select an image file.", "error");
+                        profilePicInput.value = '';
+                        preview.style.display = 'none';
+                        return;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                        showNotification("Image size must be less than 5MB.", "error");
+                        profilePicInput.value = '';
+                        preview.style.display = 'none';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        console.log("Profile image preview loaded:", e.target.result);
+                    };
+                    reader.onerror = function() {
+                        showNotification("Failed to load image.", "error");
+                        preview.style.display = 'none';
+                        console.error("FileReader error");
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.style.display = 'none';
+                }
+            });
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const selectedUser = document.getElementById('userSelect').value;
+                const name = document.getElementById('editName').value.trim();
+                const phone = document.getElementById('editPhone').value.trim();
+                const email = document.getElementById('editEmail').value.trim();
+                const address = document.getElementById('editAddress').value.trim();
+                const city = document.getElementById('editCity').value.trim();
+                
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showNotification("Please enter a valid email address.", "error");
+                    return;
+                }
+                
+                users[selectedUser].name = name;
+                users[selectedUser].phone = '📞 ' + phone;
+                users[selectedUser].email = '📧 ' + email;
+                users[selectedUser].address = '📍 ' + address;
+                users[selectedUser].city = '📍 ' + city;
+                
+                if (profilePicInput.files && profilePicInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        users[selectedUser].profilePic = e.target.result;
+                        switchUser();
+                        console.log("Profile image updated:", e.target.result);
+                    };
+                    reader.onerror = function() {
+                        showNotification("Failed to update profile image.", "error");
+                        console.error("FileReader error on save");
+                    };
+                    reader.readAsDataURL(profilePicInput.files[0]);
+                } else {
+                    switchUser();
+                }
+                
+                closeProfileEdit();
+                showNotification("Profile updated successfully!", "success");
+            });
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.background = type === 'success' ? 'var(--primary-gradient)' : 
+                                          type === 'error' ? 'linear-gradient(135deg, #ff4d4d, #ff0000)' : 
+                                          'var(--primary-gradient)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '10px';
+            notification.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            notification.style.zIndex = '10000';
+            notification.style.fontWeight = '600';
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+        
+        // Enhanced click/touch outside to close sidebar
+        ['click', 'touchend'].forEach(eventType => {
+            document.addEventListener(eventType, function(event) {
+                const sidebar = document.getElementById('sidebar');
+                const menuToggle = document.querySelector('.menu-toggle');
+                const overlay = document.getElementById('sidebarOverlay');
+                
+                if (!sidebar.classList.contains('collapsed') && 
+                    !sidebar.contains(event.target) && 
+                    !menuToggle.contains(event.target) && 
+                    overlay.classList.contains('active')) {
+                    toggleSidebar();
+                    console.log("Overlay clicked, sidebar closed");
+                }
+            });
+        });
+        
+        // Close notification panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const notificationPanel = document.getElementById('notificationPanel');
+            const notificationBtn = document.querySelector('.notification-btn');
+            
+            if (!notificationPanel.contains(event.target) && 
+                !notificationBtn.contains(event.target) && 
+                notificationPanel.classList.contains('active')) {
+                notificationPanel.classList.remove('active');
+            }
+        });
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('profileEditModal');
+            
+            if (event.target === modal) {
+                closeProfileEdit();
+            }
+        });
     </script>
 </body>
 </html>

@@ -4,64 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Successful</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function PaymentSuccess() {
+            React.useEffect(() => {
+                const duration = 5 * 1000;
+                const animationEnd = Date.now() + duration;
+                const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                const interval = setInterval(() => {
+                    const timeLeft = animationEnd - Date.now();
+                    if (timeLeft <= 0) return clearInterval(interval);
+
+                    confetti({
+                        ...defaults,
+                        particleCount: 40,
+                        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                    });
+                    confetti({
+                        ...defaults,
+                        particleCount: 40,
+                        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                    });
+                }, 250);
+
+                return () => clearInterval(interval);
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-green-100 via-white to-green-100 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center transform transition-all duration-500 hover:scale-105">
+                        <div className="relative">
+                            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-green-500 flex items-center justify-center animate-[pop_0.5s_ease-in-out]">
+                                <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h2 className="text-3xl font-bold text-gray-800 mb-4">Payment Successful!</h2>
+                        <p className="text-gray-600 mb-6">Thank you for your purchase! Your transaction has been completed successfully.</p>
+                        
+                        {/* Timeline */}
+                        <div className="flex justify-center mb-8">
+                            <div className="flex items-center space-x-4">
+                                <div className="flex flex-col items-center">
+                                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">1</div>
+                                    <p className="text-sm text-gray-600 mt-2">Order Placed</p>
+                                </div>
+                                <div className="w-12 h-1 bg-green-500 mt-5"></div>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">2</div>
+                                    <p className="text-sm text-gray-600 mt-2">Payment Confirmed</p>
+                                </div>
+                                <div className="w-12 h-1 bg-green-500 mt-5"></div>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">3</div>
+                                    <p className="text-sm text-gray-600 mt-2">Order Shipped</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a
+                            href="index.html"
+                            className="inline-block bg-green-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-green-600 transition-colors duration-300"
+                        >
+                            Go to Dashboard
+                        </a>
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<PaymentSuccess />);
+    </script>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .container {
-            text-align: center;
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        .checkmark {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: #4CAF50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 20px auto;
-            animation: pop 0.5s ease-in-out;
-        }
-        .checkmark::after {
-            content: '\2713';
-            font-size: 40px;
-            color: white;
-        }
         @keyframes pop {
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-        h2 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-        .button {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: #4CAF50;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="checkmark"></div>
-        <h2>Payment Successful!</h2>
-        <p>Thank you for your purchase.</p>
-        <a href="index1.html" class="button">Go to Dashboard</a>
-    </div>
 </body>
 </html>

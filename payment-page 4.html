@@ -3,100 +3,502 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payment Page</title>
+    <title>Payment - Foodopia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Basic Styles */
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 0;
+        /* Import the same font as the main website */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap');
+        
+        /* CSS Variables for Consistent Theming */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff4d4d, #ff944d);
+            --secondary-gradient: linear-gradient(45deg, #ff944d, #ff4d4d);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #f0f0f0;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --transition-speed: 0.4s;
+        }
+        
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            display: flex;
+            background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        /* Add overlay for better readability */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            z-index: -1;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-gradient);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-gradient);
+        }
+        
+        .sidebar {
+            width: 300px;
+            height: 100vh;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-right: 1px solid var(--glass-border);
+            color: white;
+            padding: 25px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            text-align: center;
+            box-shadow: 4px 0 15px var(--shadow-color);
+            transition: transform var(--transition-speed) ease;
+            z-index: 100;
+            border-right: 2px solid #ff944d;
+        }
+        
+        .sidebar.collapsed {
+            transform: translateX(-100%);
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+        }
+        
+        .user-switch {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        
+        .user-switch label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .user-switch select {
+            padding: 12px;
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            outline: none;
+        }
+        
+        .user-switch select:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ff944d;
+            box-shadow: 0 0 10px rgba(255, 148, 77, 0.3);
+        }
+        
+        .user-switch select option {
+            background: #333;
+            color: white;
+        }
+        
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 5px solid var(--glass-border);
+            display: block;
+            margin: 20px auto;
+            object-fit: cover;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            transition: all var(--transition-speed) ease;
+            cursor: pointer;
+        }
+        
+        .profile-pic:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 148, 77, 0.4);
+        }
+        
+        .edit-profile-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .edit-profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.4);
+        }
+        
+        .compartment {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 15px;
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .compartment:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .compartment h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ff944d;
+            display: flex;
+            align-items: center;
+        }
+        
+        .compartment h3 i {
+            margin-right: 10px;
+        }
+        
+        .compartment p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 100%;
+        }
+        
+        .compartment p:hover {
+            white-space: normal;
+            overflow: visible;
+        }
+        
+        .main-container {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            margin-left: 0;
+            min-height: 100vh;
+            width: 100%;
+            transition: all var(--transition-speed) ease;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .main-container.full-width {
+            margin-left: 0;
+            width: 100%;
+        }
+        
+        .top-bar {
+            height: 70px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: flex;
             align-items: center;
-            height: 100vh;
-            background: linear-gradient(135deg, #ff7eb3, #ff758c, #ff6a65, #ff5f3e);
-            animation: gradientShift 6s infinite alternate ease-in-out;
-            position: relative;
-        }
-
-        /* Gradient Animation */
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        /* Back Button */
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background-color: orange;
+            justify-content: space-between;
+            padding: 0 30px;
             color: white;
-            font-size: 16px;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
+            z-index: 99;
+            transition: all var(--transition-speed) ease;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
         }
-
-        .back-btn:hover {
-            background-color: darkorange;
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 8px 15px;
+            width: 300px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .search-container:focus-within {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 148, 77, 0.3);
+        }
+        
+        .search-container input {
+            background: none;
+            border: none;
+            color: white;
+            outline: none;
+            width: 100%;
+            padding: 5px 10px;
+            font-size: 1rem;
+        }
+        
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .search-container i {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification-btn {
+            position: relative;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .notification-btn:hover {
+            color: #ff944d;
             transform: scale(1.1);
         }
-
-        /* Container */
-        .container {
-            max-width: 400px;
-            margin: 12px auto;
-            padding: 20px;
-            border: 2px solid #fff;
-            border-radius: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4d4d;
+            color: white;
+            font-size: 0.7rem;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        /* Buttons */
-        button {
+        
+        .top-bar .back-btn {
+            padding: 12px 25px;
+            border: none;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .top-bar .back-btn i {
+            margin-right: 8px;
+        }
+        
+        .top-bar .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--secondary-gradient);
+            z-index: -1;
+            transition: transform 0.5s ease;
+            transform: translateX(-100%);
+        }
+        
+        .top-bar .back-btn:hover::before {
+            transform: translateX(0);
+        }
+        
+        .top-bar .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.6);
+        }
+        
+        .menu-toggle {
+            display: block;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 90px 30px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        .payment-section {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .payment-section h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 77, 77, 0.3);
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .payment-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all var(--transition-speed) ease;
+            max-width: 400px;
+        }
+        
+        .payment-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-color);
+        }
+        
+        .payment-container h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #ff944d;
+            margin-bottom: 15px;
+        }
+        
+        .payment-container button {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px;
             font-size: 16px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--transition-speed) ease;
+            margin: 10px 0;
         }
-
-        button:hover {
-            transform: scale(1.05);
-        }
-
+        
         .upi-btn {
-            background: #007bff;
+            background: var(--primary-gradient);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
         }
-
+        
         .upi-btn:hover {
-            background: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.6);
         }
-
+        
         .cod-btn {
-            background: #28a745;
+            background: var(--secondary-gradient);
             color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
         }
-
+        
         .cod-btn:hover {
-            background: #1e7d32;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.6);
         }
-
-        /* Flip Card */
+        
+        .payment-container input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            margin-bottom: 15px;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .payment-container input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ff944d;
+            box-shadow: 0 0 10px rgba(255, 148, 77, 0.3);
+        }
+        
+        .payment-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .qr-container {
+            margin-top: 20px;
+        }
+        
+        .qr-container h4 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+        
         .flip-card {
             width: 200px;
             height: 200px;
@@ -104,7 +506,7 @@
             margin: auto;
             cursor: pointer;
         }
-
+        
         .flip-card-inner {
             width: 100%;
             height: 100%;
@@ -112,12 +514,11 @@
             transform-style: preserve-3d;
             transition: transform 0.6s ease-in-out;
         }
-
-        /* This class will be added via JavaScript */
+        
         .flipped {
-            transform: rotateY(180deg) !important;
+            transform: rotateY(180deg);
         }
-
+        
         .flip-card-front, .flip-card-back {
             width: 100%;
             height: 100%;
@@ -127,101 +528,943 @@
             justify-content: center;
             align-items: center;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px var(--shadow-color);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
         }
-
+        
         .flip-card-front {
-            background: #ddd;
             font-size: 16px;
-            font-weight: bold;
-            color: #555;
+            font-weight: 600;
+            color: var(--text-secondary);
         }
-
+        
         .flip-card-back {
-            background: white;
             transform: rotateY(180deg);
         }
-
+        
         .flip-card-back img {
             width: 100%;
             height: 100%;
             border-radius: 10px;
+            object-fit: cover;
         }
-
-        /* Hidden Sections */
+        
         .hidden {
             display: none;
+        }
+        
+        /* Payment Details Section */
+        .payment-details {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        .payment-details h3 {
+            color: #ff944d;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .payment-details p {
+            margin-bottom: 10px;
+        }
+        
+        .payment-details button {
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        /* Spinner animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .fa-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            width: 350px;
+            max-height: 400px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            z-index: 1000;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .notification-panel.active {
+            display: flex;
+        }
+        
+        .notification-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .notification-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .notification-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .notification-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .notification-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+        
+        .close-notifications {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .close-notifications:hover {
+            color: #ff944d;
+        }
+        
+        /* Modal for Profile Edit */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            overflow: auto;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff944d;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .close-modal:hover {
+            color: #ff944d;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .form-group input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ff944d;
+            box-shadow: 0 0 10px rgba(255, 148, 77, 0.3);
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-group input[type="file"] {
+            padding: 0;
+        }
+        
+        .profile-pic-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-top: 10px;
+            object-fit: cover;
+            display: none;
+        }
+        
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+        
+        .btn-cancel, .btn-save {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease;
+        }
+        
+        .btn-cancel {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-save {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.6);
+        }
+        
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 99;
+            display: none;
+            transition: opacity var(--transition-speed) ease, visibility var(--transition-speed) ease;
+            visibility: hidden;
+        }
+        
+        .sidebar-overlay.active {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1600px) {
+            .payment-section {
+                max-width: 500px;
+            }
+        }
+        
+        @media (max-width: 1400px) {
+            .sidebar {
+                width: 260px;
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .payment-section {
+                max-width: 450px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .search-container {
+                width: 250px;
+            }
+            
+            .payment-section {
+                max-width: 400px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .payment-section h1 {
+                font-size: 2.5rem;
+            }
+            
+            .payment-section {
+                max-width: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 280px;
+                transform: translateX(-100%);
+            }
+            
+            .main-container {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .main-container.full-width {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .search-container {
+                display: none;
+            }
+            
+            .payment-section h1 {
+                font-size: 2.2rem;
+            }
+            
+            .payment-container {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+            
+            .notification-panel {
+                width: 90%;
+                right: 5%;
+            }
+            
+            .payment-section {
+                max-width: 100%;
+            }
+            
+            .compartment p {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .payment-section h1 {
+                font-size: 1.8rem;
+            }
+            
+            .payment-container {
+                padding: 15px;
+            }
+            
+            .flip-card {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .modal-content {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Back Button -->
-    <a href="home3.html" class="back-btn">← Back</a>
-
-    <h2>Select Payment Method</h2> 
-
-    <div class="container">
-        <button class="upi-btn" onclick="showPayment('upi')">Pay via UPI</button>
-        <button class="cod-btn" onclick="showPayment('cod')">Cash on Delivery</button>
+    <div class="sidebar collapsed" id="sidebar">
+        <div class="logo">
+            <h1>Foodopia</h1>
+        </div>
+        <div class="user-switch">
+            <label for="userSelect"><i class="fas fa-user-circle"></i> Switch User:</label>
+            <select id="userSelect" onchange="switchUser()">
+                <option value="user1">Govindpuri Goswami</option>
+                <option value="user2">Suhani Ajaysingh Thakur</option>
+                <option value="user3">Snehal Somwanshi</option>
+            </select>
+        </div>
+        <img src="images/profile1.jpg" alt="Profile Picture" class="profile-pic" id="profilePic" onclick="openProfileEdit()">
+        <button class="edit-profile-btn" onclick="openProfileEdit()"><i class="fas fa-edit"></i> Edit Profile</button>
+        <div class="compartment">
+            <h3><i class="fas fa-user"></i> Name</h3>
+            <p id="userName">Govindpuri Goswami</p>
+        </div>
+        <div class="compartment">
+            <h3><i class="fas fa-address-book"></i> Contact</h3>
+            <p id="userPhone">📞 7219398827</p>
+            <p id="userEmail" title="govindgoswami750@gmail.com">📧 govindgoswami750@gmail.com</p>
+        </div>
+        <div class="compartment">
+            <h3><i class="fas fa-map-marker-alt"></i> Address</h3>
+            <p id="userAddress">📍 Bajajnagar, Chhatrapati Sambhajinagar-431136</p>
+        </div>
+        <div class="compartment">
+            <h3><i class="fas fa-city"></i> Current City</h3>
+            <p id="userCity">📍 Chhatrapati Sambhajinagar</p>
+        </div>
     </div>
-
-    <!-- UPI Payment Section -->
-    <div id="upi" class="container hidden">
-        <h3>UPI Payment</h3>
-        <input type="text" id="upi-id" placeholder="Enter UPI ID">
-        <button class="upi-btn" onclick="processPayment('UPI')">Proceed to Pay</button>
-        <div class="qr-container">
-            <h4>Click to Reveal QR Code</h4>
-            <div class="flip-card" onclick="flipQR()">
-                <div class="flip-card-inner" id="qrFlip">
-                    <!-- Front: Hidden Text -->
-                    <div class="flip-card-front">
-                        Click Here to See QR Code
+    
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <div class="main-container full-width" id="mainContainer">
+        <div class="top-bar">
+            <div class="menu-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search restaurants, dishes..." id="searchInput">
+            </div>
+            <div class="top-bar-actions">
+                <button class="notification-btn" onclick="toggleNotifications()">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">3</span>
+                </button>
+                <button class="back-btn" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+            </div>
+        </div>
+        
+        <div class="notification-panel" id="notificationPanel">
+            <div class="notification-header">
+                <span>Notifications</span>
+                <button class="close-notifications" onclick="toggleNotifications()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="notification-list">
+                <div class="notification-item">
+                    <div class="notification-title">Payment Initiated</div>
+                    <div class="notification-message">Your payment process has started</div>
+                    <div class="notification-time">5 minutes ago</div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-title">UPI Offer</div>
+                    <div class="notification-message">Get 10% cashback on UPI payments</div>
+                    <div class="notification-time">1 hour ago</div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-title">Order Update</div>
+                    <div class="notification-message">Your order is ready for payment</div>
+                    <div class="notification-time">2 hours ago</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="payment-section">
+                <h1>Select Payment Method</h1>
+                <div class="payment-container">
+                    <button class="upi-btn" onclick="showPayment('upi')"><i class="fas fa-qrcode"></i> Pay via UPI</button>
+                    <button class="cod-btn" onclick="showPayment('cod')"><i class="fas fa-money-bill"></i> Cash on Delivery</button>
+                </div>
+                <div id="upi" class="payment-container hidden">
+                    <h3>UPI Payment</h3>
+                    <input type="text" id="upi-id" placeholder="Enter UPI ID">
+                    <button class="upi-btn" onclick="processPayment('UPI')"><i class="fas fa-arrow-right"></i> Proceed to Pay</button>
+                    <div class="qr-container">
+                        <h4>Click to Reveal QR Code</h4>
+                        <div class="flip-card" onclick="flipQR()">
+                            <div class="flip-card-inner" id="qrFlip">
+                                <div class="flip-card-front">
+                                    Click Here to See QR Code
+                                </div>
+                                <div class="flip-card-back">
+                                    <img src="images/qr.png" alt="QR Code">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Back: QR Code -->
-                    <div class="flip-card-back">
-                        <img src="qr.png" alt="QR Code">
-                    </div>
+                </div>
+                <div id="cod" class="payment-container hidden">
+                    <h3>Cash on Delivery</h3>
+                    <p>Order will be placed with COD option.</p>
+                    <button class="cod-btn" onclick="processPayment('COD')"><i class="fas fa-check"></i> Confirm Order</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Cash on Delivery Section -->
-    <div id="cod" class="container hidden">
-        <h3>Cash on Delivery</h3>
-        <p>Order will be placed with COD option.</p>
-        <button class="cod-btn" onclick="processPayment('COD')">Confirm Order</button> 
+    
+    <!-- Profile Edit Modal -->
+    <div class="modal" id="profileEditModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Profile</h3>
+                <button class="close-modal" onclick="closeProfileEdit()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="profileEditForm">
+                <div class="form-group">
+                    <label for="editProfilePic">Profile Picture</label>
+                    <input type="file" id="editProfilePic" accept="image/*">
+                    <img id="profilePicPreview" class="profile-pic-preview" alt="Profile Picture Preview">
+                </div>
+                <div class="form-group">
+                    <label for="editName">Name</label>
+                    <input type="text" id="editName" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone</label>
+                    <input type="text" id="editPhone" placeholder="Enter your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="editAddress">Address</label>
+                    <input type="text" id="editAddress" placeholder="Enter your address">
+                </div>
+                <div class="form-group">
+                    <label for="editCity">City</label>
+                    <input type="text" id="editCity" placeholder="Enter your city">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancel" onclick="closeProfileEdit()">Cancel</button>
+                    <button type="submit" class="btn-save">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
-
+    
     <script>
-        // Show the selected payment method
+        const users = {
+            user1: {
+                name: "Govindpuri Goswami",
+                phone: "📞 7219398827",
+                email: "📧 govindgoswami750@gmail.com",
+                address: "📍 Bajajnagar, Chhatrapati Sambhajinagar-431136",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile1.jpg"
+            },
+            user2: {
+                name: "Suhani Ajaysingh Thakur",
+                phone: "📞 7385500439",
+                email: "📧 suhanithakur9096@gmail.com",
+                address: "📍 Near fire station, Railway station road, Chhatrapati Sambhajinagar, 431001",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile2.jpg"
+            },
+            user3: {
+                name: "Snehal Somwanshi",
+                phone: "📞 7875033445",
+                email: "📧 snehaldeshmukh611@gmail.com",
+                address: "📍 Tv center, Chhatrapati Sambhajinagar-431001",
+                city: "📍 Chhatrapati Sambhajinagar",
+                profilePic: "images/profile3.jpg"
+            }
+        };
+        
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupSearchFunctionality();
+            setupProfileEditForm();
+            const sidebar = document.getElementById('sidebar');
+            const mainContainer = document.getElementById('mainContainer');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.add('collapsed');
+            mainContainer.classList.add('full-width');
+            overlay.classList.remove('active');
+            console.log("Initialized: Sidebar collapsed on all devices, Overlay hidden");
+        });
+        
+        function switchUser() {
+            const selectedUser = document.getElementById('userSelect').value;
+            document.getElementById('userName').textContent = users[selectedUser].name;
+            document.getElementById('userPhone').textContent = users[selectedUser].phone;
+            document.getElementById('userEmail').textContent = users[selectedUser].email;
+            document.getElementById('userEmail').title = users[selectedUser].email.replace('📧 ', '');
+            document.getElementById('userAddress').textContent = users[selectedUser].address;
+            document.getElementById('userCity').textContent = users[selectedUser].city;
+            document.getElementById('profilePic').src = users[selectedUser].profilePic;
+            showNotification("User switched to " + users[selectedUser].name, "success");
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const mainContainer = document.getElementById('mainContainer');
+            
+            sidebar.classList.toggle('collapsed');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            overlay.classList.toggle('active', !isCollapsed);
+            mainContainer.classList.toggle('full-width', isCollapsed);
+            
+            console.log(`Sidebar toggled: ${isCollapsed ? 'Collapsed' : 'Open'}, Overlay active: ${overlay.classList.contains('active')}`);
+        }
+        
+        function goBack() {
+            showNotification("Returning to previous page...", "info");
+            setTimeout(() => {
+                window.location.href = "home3.html";
+            }, 1500);
+        }
+        
+        function toggleNotifications() {
+            const notificationPanel = document.getElementById('notificationPanel');
+            notificationPanel.classList.toggle('active');
+            
+            if (notificationPanel.classList.contains('active')) {
+                document.querySelector('.notification-badge').style.display = 'none';
+            }
+        }
+        
         function showPayment(method) {
             document.getElementById('upi').classList.add('hidden');
             document.getElementById('cod').classList.add('hidden');
             document.getElementById(method).classList.remove('hidden');
         }
-
-        // Process the payment
+        
         function processPayment(method) {
             if (method === 'UPI') {
-                const upiId = document.getElementById('upi-id').value;
-                if (upiId.trim() !== "") {
-                    alert("Payment Successful via UPI!");
-                    window.location.href = "success5.html";
-                } else {
-                    alert('Please enter a valid UPI ID.');
+                const upiId = document.getElementById('upi-id').value.trim();
+                
+                // UPI ID validation regex
+                const upiRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z]{2,}$/;
+                
+                if (upiId === "") {
+                    showNotification("Please enter a UPI ID.", "error");
+                    return;
                 }
+                
+                if (!upiRegex.test(upiId)) {
+                    showNotification("Please enter a valid UPI ID (e.g., username@upi).", "error");
+                    return;
+                }
+                
+                // Show processing notification
+                showNotification("Processing UPI payment...", "info");
+                
+                // Disable the button to prevent multiple clicks
+                const upiButton = document.querySelector('#upi .upi-btn');
+                const originalText = upiButton.innerHTML;
+                upiButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                upiButton.disabled = true;
+                
+                // Simulate payment processing delay
+                setTimeout(() => {
+                    // Simulate random success/failure (90% success rate for demo)
+                    const isSuccess = Math.random() < 0.9;
+                    
+                    if (isSuccess) {
+                        showNotification("Payment Successful via UPI!", "success");
+                        
+                        // Show confirmation details
+                        const paymentDetails = document.createElement('div');
+                        paymentDetails.className = 'payment-details';
+                        paymentDetails.innerHTML = `
+                            <h3>Payment Details</h3>
+                            <p><strong>UPI ID:</strong> ${upiId}</p>
+                            <p><strong>Transaction ID:</strong> TXN${Math.floor(Math.random() * 1000000000)}</p>
+                            <p><strong>Date & Time:</strong> ${new Date().toLocaleString()}</p>
+                            <button class="upi-btn" onclick="continueToSuccess()">Continue</button>
+                        `;
+                        
+                        const upiContainer = document.getElementById('upi');
+                        // Remove any existing payment details
+                        const existingDetails = upiContainer.querySelector('.payment-details');
+                        if (existingDetails) {
+                            existingDetails.remove();
+                        }
+                        upiContainer.appendChild(paymentDetails);
+                    } else {
+                        showNotification("Payment failed. Please try again.", "error");
+                        // Re-enable the button
+                        upiButton.innerHTML = originalText;
+                        upiButton.disabled = false;
+                    }
+                }, 2000);
             } else if (method === 'COD') {
-                alert("Order Confirmed with Cash on Delivery!");
-                window.location.href = "confirm6.html";
+                showNotification("Order Confirmed with Cash on Delivery!", "success");
+                setTimeout(() => {
+                    window.location.href = "confirm6.html";
+                }, 1500);
             }
         }
-
-        // Function to Flip QR Code Only Once
+        
+        // New function to continue to success page after viewing payment details
+        function continueToSuccess() {
+            window.location.href = "success5.html";
+        }
+        
         function flipQR() {
             document.getElementById('qrFlip').classList.add('flipped');
         }
+        
+        function setupSearchFunctionality() {
+            const searchInput = document.getElementById('searchInput');
+            
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = searchInput.value.trim();
+                    if (searchTerm) {
+                        showNotification(`Searching for "${searchTerm}"...`, "info");
+                        setTimeout(() => {
+                            window.location.href = `restaurants.html?search=${encodeURIComponent(searchTerm)}`;
+                        }, 1000);
+                    }
+                }
+            });
+        }
+        
+        function openProfileEdit() {
+            const modal = document.getElementById('profileEditModal');
+            const selectedUser = document.getElementById('userSelect').value;
+            
+            document.getElementById('editName').value = users[selectedUser].name;
+            document.getElementById('editPhone').value = users[selectedUser].phone.replace('📞 ', '');
+            document.getElementById('editEmail').value = users[selectedUser].email.replace('📧 ', '');
+            document.getElementById('editAddress').value = users[selectedUser].address.replace('📍 ', '');
+            document.getElementById('editCity').value = users[selectedUser].city.replace('📍 ', '');
+            
+            const preview = document.getElementById('profilePicPreview');
+            preview.src = users[selectedUser].profilePic;
+            preview.style.display = 'block';
+            
+            modal.classList.add('active');
+            console.log("Profile edit modal opened");
+        }
+        
+        function closeProfileEdit() {
+            const modal = document.getElementById('profileEditModal');
+            modal.classList.remove('active');
+            document.getElementById('profilePicPreview').style.display = 'none';
+            document.getElementById('editProfilePic').value = '';
+        }
+        
+        function setupProfileEditForm() {
+            const form = document.getElementById('profileEditForm');
+            const profilePicInput = document.getElementById('editProfilePic');
+            const preview = document.getElementById('profilePicPreview');
+            
+            profilePicInput.addEventListener('change', function() {
+                if (profilePicInput.files && profilePicInput.files[0]) {
+                    const file = profilePicInput.files[0];
+                    if (!file.type.startsWith('image/')) {
+                        showNotification("Please select an image file.", "error");
+                        profilePicInput.value = '';
+                        preview.style.display = 'none';
+                        return;
+                    }
+                    if (file.size > 5 * 1024 * 1024) {
+                        showNotification("Image size must be less than 5MB.", "error");
+                        profilePicInput.value = '';
+                        preview.style.display = 'none';
+                        return;
+                    }
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        console.log("Profile image preview loaded:", e.target.result);
+                    };
+                    reader.onerror = function() {
+                        showNotification("Failed to load image.", "error");
+                        preview.style.display = 'none';
+                        console.error("FileReader error");
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.style.display = 'none';
+                }
+            });
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const selectedUser = document.getElementById('userSelect').value;
+                const name = document.getElementById('editName').value.trim();
+                const phone = document.getElementById('editPhone').value.trim();
+                const email = document.getElementById('editEmail').value.trim();
+                const address = document.getElementById('editAddress').value.trim();
+                const city = document.getElementById('editCity').value.trim();
+                
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    showNotification("Please enter a valid email address.", "error");
+                    return;
+                }
+                
+                users[selectedUser].name = name;
+                users[selectedUser].phone = '📞 ' + phone;
+                users[selectedUser].email = '📧 ' + email;
+                users[selectedUser].address = '📍 ' + address;
+                users[selectedUser].city = '📍 ' + city;
+                
+                if (profilePicInput.files && profilePicInput.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        users[selectedUser].profilePic = e.target.result;
+                        switchUser();
+                        console.log("Profile image updated:", e.target.result);
+                    };
+                    reader.onerror = function() {
+                        showNotification("Failed to update profile image.", "error");
+                        console.error("FileReader error on save");
+                    };
+                    reader.readAsDataURL(profilePicInput.files[0]);
+                } else {
+                    switchUser();
+                }
+                
+                closeProfileEdit();
+                showNotification("Profile updated successfully!", "success");
+            });
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.background = type === 'success' ? 'var(--primary-gradient)' : 
+                                          type === 'error' ? 'linear-gradient(135deg, #ff4d4d, #ff0000)' : 
+                                          'linear-gradient(135deg, #4d94ff, #4d4dff)';
+            notification.style.color = 'white';
+            notification.style.padding = '15px 25px';
+            notification.style.borderRadius = '10px';
+            notification.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+            notification.style.zIndex = '10000';
+            notification.style.fontWeight = '600';
+            notification.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 3000);
+        }
+        
+        // Enhanced click/touch outside to close sidebar
+        ['click', 'touchend'].forEach(eventType => {
+            document.addEventListener(eventType, function(event) {
+                const sidebar = document.getElementById('sidebar');
+                const menuToggle = document.querySelector('.menu-toggle');
+                const overlay = document.getElementById('sidebarOverlay');
+                
+                if (!sidebar.classList.contains('collapsed') && 
+                    !sidebar.contains(event.target) && 
+                    !menuToggle.contains(event.target) && 
+                    overlay.classList.contains('active')) {
+                    toggleSidebar();
+                    console.log("Overlay clicked, sidebar closed");
+                }
+            });
+        });
+        
+        // Close notification panel when clicking outside
+        document.addEventListener('click', function(event) {
+            const notificationPanel = document.getElementById('notificationPanel');
+            const notificationBtn = document.querySelector('.notification-btn');
+            
+            if (!notificationPanel.contains(event.target) && 
+                !notificationBtn.contains(event.target) && 
+                notificationPanel.classList.contains('active')) {
+                notificationPanel.classList.remove('active');
+            }
+        });
+        
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('profileEditModal');
+            
+            if (event.target === modal) {
+                closeProfileEdit();
+            }
+        });
     </script>
 </body>
 </html>

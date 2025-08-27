@@ -3,184 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanks for your order</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(45deg, #2b5876, #4e4376, #ff758c);
-            background-size: 300% 300%;
-            animation: gradientBG 8s ease infinite;
-            overflow: hidden;
-            color: white;
+    <title>Thanks for Your Order</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.15/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function OrderConfirmation() {
+            const [showConfetti, setShowConfetti] = React.useState(true);
+
+            React.useEffect(() => {
+                if (showConfetti) {
+                    const duration = 5 * 1000;
+                    const animationEnd = Date.now() + duration;
+                    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+                    function randomInRange(min, max) {
+                        return Math.random() * (max - min) + min;
+                    }
+
+                    const interval = setInterval(() => {
+                        const timeLeft = animationEnd - Date.now();
+                        if (timeLeft <= 0) {
+                            setShowConfetti(false);
+                            return clearInterval(interval);
+                        }
+
+                        confetti({
+                            ...defaults,
+                            particleCount: 50,
+                            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+                        });
+                        confetti({
+                            ...defaults,
+                            particleCount: 50,
+                            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+                        });
+                    }, 250);
+
+                    return () => clearInterval(interval);
+                }
+            }, [showConfetti]);
+
+            const handleDownloadReceipt = () => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                // Colors and styling
+                const primaryColor = [255, 117, 140]; // Matches webpage gradient
+                const secondaryColor = [40, 40, 40]; // Dark text
+                const accentColor = [221, 36, 118]; // Button gradient color
+
+                // Header: Logo Placeholder and Title
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(24);
+                doc.setTextColor(...secondaryColor);
+                doc.text("Your Store Name", 105, 20, { align: "center" }); // Logo placeholder
+                doc.setFontSize(16);
+                doc.setTextColor(...primaryColor);
+                doc.text("Order Receipt", 105, 30, { align: "center" });
+
+                // Header Line
+                doc.setDrawColor(...primaryColor);
+                doc.setLineWidth(0.5);
+                doc.line(20, 35, 190, 35);
+
+                // Order Details Table
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
+                doc.setTextColor(...secondaryColor);
+
+                // Table headers
+                doc.setFillColor(...primaryColor);
+                doc.rect(20, 45, 170, 10, "F");
+                doc.setTextColor(255, 255, 255);
+                doc.text("Description", 25, 51);
+                doc.text("Details", 100, 51);
+
+                // Table content
+                doc.setTextColor(...secondaryColor);
+                doc.setFillColor(245, 245, 245); // Light gray background
+                doc.rect(20, 55, 170, 10, "F");
+                doc.text("Order ID", 25, 61);
+                doc.text("#123456", 100, 61);
+
+                doc.rect(20, 65, 170, 10, "F");
+                doc.text("Date", 25, 71);
+                doc.text("2023-10-25", 100, 71);
+
+                doc.rect(20, 75, 170, 10, "F");
+                doc.text("Time", 25, 81);
+                doc.text("14:30 PM", 100, 81);
+
+                doc.rect(20, 85, 170, 10, "F");
+                doc.text("Total", 25, 91);
+                doc.text("₹0.00", 100, 91);
+
+                // Footer Section
+                doc.setFontSize(10);
+                doc.setTextColor(...secondaryColor);
+                doc.text("Thank you for shopping with us!", 105, 110, { align: "center" });
+                doc.text("Contact us at: govindgoswami750@gmail.com", 105, 118, { align: "center" });
+                doc.text("Visit us at: www.yourstorename.com", 105, 126, { align: "center" });
+
+                // Decorative Border
+                doc.setDrawColor(...accentColor);
+                doc.setLineWidth(1);
+                doc.rect(10, 10, 190, 277, "S");
+
+                // Watermark (optional)
+                doc.setFontSize(40);
+                doc.setTextColor(200, 200, 200);
+                doc.text("PAID", 105, 150, { align: "center", angle: 45 });
+
+                // Save the PDF
+                doc.save("order-receipt.pdf");
+            };
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-[#2b5876] via-[#4e4376] to-[#ff758c] bg-[length:300%_300%] animate-[gradientBG_8s_ease_infinite] flex items-center justify-center p-4 overflow-hidden">
+                    {/* Floating Bubbles */}
+                    <div className="absolute w-20 h-20 bg-white/20 rounded-full opacity-60 animate-[bubbleMove_10s_infinite_ease-in-out] left-[10%]" style={{ animationDelay: '0s' }}></div>
+                    <div className="absolute w-12 h-12 bg-white/20 rounded-full opacity-60 animate-[bubbleMove_10s_infinite_ease-in-out] left-[30%]" style={{ animationDelay: '2s' }}></div>
+                    <div className="absolute w-16 h-16 bg-white/20 rounded-full opacity-60 animate-[bubbleMove_10s_infinite_ease-in-out] left-[50%]" style={{ animationDelay: '4s' }}></div>
+                    <div className="absolute w-24 h-24 bg-white/20 rounded-full opacity-60 animate-[bubbleMove_10s_infinite_ease-in-out] left-[70%]" style={{ animationDelay: '1s' }}></div>
+                    <div className="absolute w-20 h-20 bg-white/20 rounded-full opacity-60 animate-[bubbleMove_10s_infinite_ease-in-out] left-[90%]" style={{ animationDelay: '3s' }}></div>
+
+                    {/* Glowing Sparkles */}
+                    <div className="absolute w-4 h-4 bg-yellow-400 rounded-full opacity-0 animate-[sparkle_3s_infinite_ease-in-out] top-[10%] left-[20%]"></div>
+                    <div className="absolute w-4 h-4 bg-yellow-400 rounded-full opacity-0 animate-[sparkle_3s_infinite_ease-in-out] top-[20%] left-[50%]"></div>
+                    <div className="absolute w-4 h-4 bg-yellow-400 rounded-full opacity-0 animate-[sparkle_3s_infinite_ease-in-out] top-[30%] left-[80%]"></div>
+                    <div className="absolute w-4 h-4 bg-yellow-400 rounded-full opacity-0 animate-[sparkle_3s_infinite_ease-in-out] top-[40%] left-[10%]"></div>
+                    <div className="absolute w-4 h-4 bg-yellow-400 rounded-full opacity-0 animate-[sparkle_3s_infinite_ease-in-out] top-[50%] left-[70%]"></div>
+
+                    {/* Confirmation Card */}
+                    <div className="text-center bg-gradient-to-br from-[#ff758c]/90 to-[#ff7eb3]/90 p-8 rounded-2xl shadow-2xl backdrop-blur-xl max-w-lg w-full animate-[fadeIn_1s_ease-in-out] relative z-10 text-white">
+                        <div className="mb-6">
+                            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/30 flex items-center justify-center animate-[pop_0.5s_ease-in-out]">
+                                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <h1 className="text-3xl font-bold mb-2">Thanks for Your Order!</h1>
+                            <p className="text-lg">Your order has been successfully placed.</p>
+                        </div>
+
+                        {/* Order Details */}
+                        <div className="bg-white/15 p-6 rounded-xl mb-6">
+                            <h2 className="text-2xl font-semibold mb-4">Order Details</h2>
+                            <p className="mb-2"><strong>Order ID:</strong> #123456</p>
+                            <div className="grid grid-cols-2 gap-2 mb-2">
+                                <p><strong>Date:</strong> 2023-10-25</p>
+                                <p><strong>Time:</strong> 14:30 PM</p>
+                            </div>
+                            <p><strong>Total:</strong> ₹0.00</p>
+                        </div>
+
+                        {/* Progress Timeline */}
+                        <div className="flex justify-center mb-6">
+                            <div className="flex items-center space-x-4">
+                                <div className="flex flex-col items-center">
+                                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">1</div>
+                                    <p className="text-sm mt-2">Order Placed</p>
+                                </div>
+                                <div className="w-12 h-1 bg-green-500 mt-5"></div>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center text-white font-semibold">2</div>
+                                    <p className="text-sm mt-2">Payment Confirmed</p>
+                                </div>
+                                <div className="w-12 h-1 bg-gray-300 mt-5"></div>
+                                <div className="flex flex-col items-center">
+                                    <div className="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">3</div>
+                                    <p className="text-sm mt-2">Order Shipped</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Footer Actions */}
+                        <div className="space-y-4">
+                            <p className="text-sm">
+                                We appreciate your business! If you have any questions, feel free to{' '}
+                                <a href="mailto:govindgoswami750@gmail.com" className="text-yellow-300 hover:underline font-semibold">
+                                    contact us
+                                </a>.
+                            </p>
+                            <div className="flex justify-center gap-4">
+                                <button
+                                    onClick={() => (window.location.href = 'home.html')}
+                                    className="bg-gradient-to-r from-[#ff512f] to-[#dd2476] text-white font-semibold py-3 px-6 rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:opacity-90"
+                                >
+                                    Continue Shopping
+                                </button>
+                                <button
+                                    onClick={handleDownloadReceipt}
+                                    className="bg-white/20 text-white font-semibold py-3 px-6 rounded-full hover:scale-105 transition-all duration-300 shadow-lg hover:bg-white/30"
+                                >
+                                    Download Receipt (PDF)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
         }
 
-        /* Animated Background Effect */
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<OrderConfirmation />);
+    </script>
+    <style>
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        /* Floating Bubbles */
-        .bubble {
-            position: absolute;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            opacity: 0.6;
-            animation: bubbleMove 10s infinite ease-in-out;
-        }
-
         @keyframes bubbleMove {
             0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
             50% { opacity: 1; }
             100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
         }
-
-        /* Glowing Sparkles */
-        .sparkle {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background-color: #ffd700;
-            border-radius: 50%;
-            opacity: 0;
-            animation: sparkle 3s infinite ease-in-out;
-        }
-
         @keyframes sparkle {
             0%, 100% { opacity: 0; transform: scale(0.5); }
             50% { opacity: 1; transform: scale(1.5); }
         }
-
-        /* Gradient Themed Content Box */
-        .confetti-container {
-            text-align: center;
-            background: linear-gradient(135deg, #ff758c, #ff7eb3);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(15px);
-            width: 90%;
-            max-width: 500px;
-            animation: fadeIn 1s ease-in-out;
-            position: relative;
-            z-index: 2;
-            color: white;
+        @keyframes pop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .confirmation-header h1 {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-
-        .confirmation-header p {
-            font-size: 18px;
-            margin-bottom: 20px;
-        }
-
-        .order-details {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .order-details h2 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-
-        .order-details p {
-            font-size: 16px;
-            margin: 10px 0;
-        }
-
-        .confirmation-footer {
-            margin-top: 20px;
-        }
-
-        .confirmation-footer a {
-            color: #FFD700;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .confirmation-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .continue-shopping-btn {
-            background: linear-gradient(135deg, #ff512f, #dd2476);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.5);
-        }
-
-        .continue-shopping-btn:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-
-        .continue-shopping-btn:active {
-            transform: scale(0.95);
-        }
     </style>
-</head>
-<body>
-    <!-- Floating Bubbles -->
-    <div class="bubble" style="width: 80px; height: 80px; left: 10%; animation-delay: 0s;"></div>
-    <div class="bubble" style="width: 50px; height: 50px; left: 30%; animation-delay: 2s;"></div>
-    <div class="bubble" style="width: 60px; height: 60px; left: 50%; animation-delay: 4s;"></div>
-    <div class="bubble" style="width: 90px; height: 90px; left: 70%; animation-delay: 1s;"></div>
-    <div class="bubble" style="width: 70px; height: 70px; left: 90%; animation-delay: 3s;"></div>
-
-    <!-- Glowing Sparkles -->
-    <div class="sparkle" style="top: 10%; left: 20%;"></div>
-    <div class="sparkle" style="top: 20%; left: 50%;"></div>
-    <div class="sparkle" style="top: 30%; left: 80%;"></div>
-    <div class="sparkle" style="top: 40%; left: 10%;"></div>
-    <div class="sparkle" style="top: 50%; left: 70%;"></div>
-
-    <!-- Confirmation Card -->
-    <div class="confetti-container">
-        <div class="confirmation-header">
-            <h1>Thanks for your order!</h1>
-            <p>Your order has been successfully placed.</p>
-        </div>
-        <div class="confirmation-body">
-            <div class="order-details">
-                <h2>Order Details</h2>
-                <p><strong>Order ID:</strong> #123456</p>
-                <div class="Date">
-                    <p><strong>Date:</strong> 2023-10-25</p>
-                    <p><strong>Time:</strong> 14:30 PM</p>
-                </div>
-                <p><strong>Total:</strong> ₹0.00</p>
-            </div>
-        </div>
-        <div class="confirmation-footer">
-            <p>We appreciate your business! If you have any questions, feel free to <a href="mailto:govindgoswami750@gmail.com">contact us</a>.</p>
-            <button onclick="window.location.href='home3.html';" class="continue-shopping-btn">Continue Shopping</button>
-        </div>
-    </div>
 </body>
 </html>

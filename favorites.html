@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Famous Restaurants in Chhatrapati Sambhajinagar</title>
+    <title>My Favorites - Foodopia</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         /* Import the same font as the main website */
@@ -389,14 +389,14 @@
             width: 100%;
         }
         
-        .restaurants-section {
+        .favorites-section {
             width: 100%;
             max-width: 1400px;
             text-align: center;
             margin-bottom: 40px;
         }
         
-        .restaurants-section h1 {
+        .favorites-section h1 {
             font-size: 3rem;
             font-weight: 700;
             margin-bottom: 15px;
@@ -408,7 +408,7 @@
             animation: fadeIn 1s ease-in-out;
         }
         
-        .restaurants-container {
+        .favorites-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
@@ -756,7 +756,7 @@
         
         /* Responsive Design */
         @media (max-width: 1600px) {
-            .restaurants-section {
+            .favorites-section {
                 max-width: 1200px;
             }
         }
@@ -771,7 +771,7 @@
                 width: 100%;
             }
             
-            .restaurants-section {
+            .favorites-section {
                 max-width: 1000px;
             }
         }
@@ -790,7 +790,7 @@
                 width: 250px;
             }
             
-            .restaurants-section {
+            .favorites-section {
                 max-width: 900px;
             }
         }
@@ -805,11 +805,11 @@
                 width: 100%;
             }
             
-            .restaurants-section h1 {
+            .favorites-section h1 {
                 font-size: 2.5rem;
             }
             
-            .restaurants-section {
+            .favorites-section {
                 max-width: 800px;
             }
         }
@@ -834,11 +834,11 @@
                 display: none;
             }
             
-            .restaurants-section h1 {
+            .favorites-section h1 {
                 font-size: 2.2rem;
             }
             
-            .restaurants-container {
+            .favorites-container {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
@@ -853,7 +853,7 @@
                 right: 5%;
             }
             
-            .restaurants-section {
+            .favorites-section {
                 max-width: 100%;
             }
             
@@ -863,7 +863,7 @@
         }
         
         @media (max-width: 576px) {
-            .restaurants-section h1 {
+            .favorites-section h1 {
                 font-size: 1.8rem;
             }
             
@@ -950,76 +950,28 @@
             </div>
             <div class="notification-list">
                 <div class="notification-item">
-                    <div class="notification-title">New Restaurant</div>
-                    <div class="notification-message">Burger Palace is now available in your area</div>
-                    <div class="notification-time">2 hours ago</div>
+                    <div class="notification-title">New Restaurant Added</div>
+                    <div class="notification-message">Hotel Rama International added to your favorites</div>
+                    <div class="notification-time">1 hour ago</div>
                 </div>
                 <div class="notification-item">
                     <div class="notification-title">Special Offer</div>
-                    <div class="notification-message">Get 20% off on your next order with code FOOD20</div>
+                    <div class="notification-message">Get 20% off at Barbeque Nation with code FAV20</div>
                     <div class="notification-time">1 day ago</div>
+                </div>
+                <div class="notification-item">
+                    <div class="notification-title">New Menu</div>
+                    <div class="notification-message">Bhoj updated their menu with new dishes</div>
+                    <div class="notification-time">2 days ago</div>
                 </div>
             </div>
         </div>
         
         <div class="content">
-            <div class="restaurants-section">
-                <h1>Famous Restaurants in Chhatrapati Sambhajinagar</h1>
-                <div class="restaurants-container">
-                    <div class="restaurant-card">
-                        <img src="hotels/rama.png" alt="Hotel Rama International">
-                        <h3>Hotel Rama International</h3>
-                        <p>Known for its luxurious ambiance and delicious multi-cuisine dishes.</p>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/bhoj.png" alt="Bhoj">
-                        <h3>Bhoj</h3>
-                        <p>Famous for its authentic Maharashtrian and North Indian cuisine.</p>
-                        <div class="rating">★★★★★</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/green-leaf.png" alt="Green Leaf Restaurant">
-                        <h3>Green Leaf Restaurant</h3>
-                        <p>A vegetarian paradise with a wide range of Indian dishes.</p>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/kinara.png" alt="Kinara Veg Restaurant">
-                        <h3>Kinara Veg Restaurant</h3>
-                        <p>Popular for its South Indian and Chinese delicacies.</p>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/barbique.png" alt="Barbeque Nation">
-                        <h3>Barbeque Nation</h3>
-                        <p>Known for its live grills and buffet spread.</p>
-                        <div class="rating">★★★★★</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/panchvati.png" alt="Hotel Panchavati">
-                        <h3>Hotel Panchavati</h3>
-                        <p>Offers a mix of Indian and Continental cuisine.</p>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/yellow.png" alt="The Yellow Chilli">
-                        <h3>The Yellow Chilli</h3>
-                        <p>Known for its modern Indian cuisine by Chef Sanjeev Kapoor.</p>
-                        <div class="rating">★★★★★</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/krishna.png" alt="Krishna Restaurant">
-                        <h3>Krishna Restaurant</h3>
-                        <p>Famous for its North Indian and Mughlai dishes.</p>
-                        <div class="rating">★★★★☆</div>
-                    </div>
-                    <div class="restaurant-card">
-                        <img src="hotels/kabab.png" alt="The Great Kabab Factory">
-                        <h3>The Great Kabab Factory</h3>
-                        <p>Specializes in a variety of kebabs and Indian dishes.</p>
-                        <div class="rating">★★★★★</div>
-                    </div>
+            <div class="favorites-section">
+                <h1>My Favorite Restaurants</h1>
+                <div class="favorites-container" id="favoritesContainer">
+                    <!-- Favorites will be dynamically added here -->
                 </div>
             </div>
         </div>
@@ -1096,8 +1048,32 @@
             }
         };
         
+        const favorites = [
+            {
+                name: "Hotel Rama International",
+                description: "Known for its luxurious ambiance and delicious multi-cuisine dishes.",
+                image: "hotels/rama.png",
+                rating: "★★★★☆"
+            },
+            {
+                name: "Bhoj",
+                description: "Famous for its authentic Maharashtrian and North Indian cuisine.",
+                image: "hotels/bhoj.png",
+                rating: "★★★★★"
+            },
+            {
+                name: "Barbeque Nation",
+                description: "Known for its live grills and buffet spread.",
+                image: "hotels/barbique.png",
+                rating: "★★★★★"
+            }
+        ];
+        
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
+            loadFavorites();
+            setupSearchFunctionality();
+            setupProfileEditForm();
             const sidebar = document.getElementById('sidebar');
             const mainContainer = document.getElementById('mainContainer');
             const overlay = document.getElementById('sidebarOverlay');
@@ -1105,8 +1081,6 @@
             mainContainer.classList.add('full-width');
             overlay.classList.remove('active');
             console.log("Initialized: Sidebar collapsed on all devices, Overlay hidden");
-            setupSearchFunctionality();
-            setupProfileEditForm();
         });
         
         function switchUser() {
@@ -1148,6 +1122,23 @@
             if (notificationPanel.classList.contains('active')) {
                 document.querySelector('.notification-badge').style.display = 'none';
             }
+        }
+        
+        function loadFavorites() {
+            const favoritesContainer = document.getElementById('favoritesContainer');
+            favoritesContainer.innerHTML = '';
+            
+            favorites.forEach(restaurant => {
+                const restaurantCard = document.createElement('div');
+                restaurantCard.className = 'restaurant-card';
+                restaurantCard.innerHTML = `
+                    <img src="${restaurant.image}" alt="${restaurant.name}">
+                    <h3>${restaurant.name}</h3>
+                    <p>${restaurant.description}</p>
+                    <div class="rating">${restaurant.rating}</div>
+                `;
+                favoritesContainer.appendChild(restaurantCard);
+            });
         }
         
         function setupSearchFunctionality() {
